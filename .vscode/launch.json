@@ -1,0 +1,11 @@
+{
+    "name": "(gdb) Launch",
+    "type": "cppdbg",
+    "request": "launch",
+    "program": "${workspaceFolder}/main",
+    "args": [],
+    "preLauchTask": "compilacao",
+    "stopAtEntry": false,
+    "cwd": "${fileDirname}",
+    "environment": []
+}
