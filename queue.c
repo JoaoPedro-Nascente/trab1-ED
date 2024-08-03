@@ -30,7 +30,8 @@ void queue_destroy(Queue *q, void (*element_free)(void *))
 {
     if (q != NULL)
     {
-        vector_destroy(q->data, element_free);
+        if (q->data != NULL)
+            vector_destroy(q->data, element_free);
         free(q);
     }
 }

@@ -13,13 +13,6 @@ struct minHeap
     int (*compare)(const void *, const void *);
 };
 
-static void swap(data_type *a, data_type *b)
-{
-    data_type temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
 static void heapify_up(MinHeap *heap, int index)
 {
     while (index > 0)
@@ -78,7 +71,8 @@ void min_heap_destroy(MinHeap *heap, void (*element_free)(void *))
 {
     if (heap != NULL)
     {
-        vector_destroy(heap->data, element_free);
+        if (heap->data != NULL)
+            vector_destroy(heap->data, element_free);
         free(heap);
     }
 }
@@ -101,7 +95,7 @@ data_type min_heap_extract_min(MinHeap *heap)
         return NULL; // Retorna NULL se a heap estiver vazia
     }
     data_type min_element = vector_remove(heap->data, 0);
-    vector_swap(heap, 0, heap->size - 1);
+    vector_swap(heap->data, 0, heap->size - 1);
     heap->size -= 1;
     heapify_down(heap, 0);
     return min_element;

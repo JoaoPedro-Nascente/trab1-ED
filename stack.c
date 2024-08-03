@@ -26,7 +26,8 @@ void stack_destroy(Stack *s, void (*element_free)(void *))
 {
     if (s != NULL)
     {
-        vector_destroy(s->data, element_free);
+        if (s->data != NULL)
+            vector_destroy(s->data, element_free);
         free(s);
     }
 }
@@ -55,7 +56,7 @@ data_type stack_peek(Stack *s)
 {
     if (s->size > 0)
     {
-        return vector_get(s->data, s->size-1);
+        return vector_get(s->data, s->size - 1);
     }
     return NULL; // Retorna NULL se a pilha estiver vazia
 }
