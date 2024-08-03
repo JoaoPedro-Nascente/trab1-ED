@@ -25,11 +25,11 @@ static void heapify_up(MinHeap *heap, int index)
     while (index > 0)
     {
         int parent_index = (index - 1) / 2;
-        if (heap->compare(heap->data[index], heap->data[parent_index]) >= 0)
+        if (heap->compare(vector_get(heap->data, index), vector_get(heap->data, parent_index)) >= 0)
         {
             break;
         }
-        swap(&heap->data[index], &heap->data[parent_index]);
+        vector_swap(heap->data, index, parent_index);
         index = parent_index;
     }
 }
@@ -43,13 +43,13 @@ static void heapify_down(MinHeap *heap, int index)
         int smallest_index = index;
 
         if (left_child_index < heap->size &&
-            heap->compare(heap->data[left_child_index], heap->data[smallest_index]) < 0)
+            heap->compare(vector_get(heap->data, left_child_index), vector_get(heap->data, smallest_index)) < 0)
         {
             smallest_index = left_child_index;
         }
 
         if (right_child_index < heap->size &&
-            heap->compare(heap->data[right_child_index], heap->data[smallest_index]) < 0)
+            heap->compare(vector_get(heap->data, right_child_index), vector_get(heap->data, smallest_index)) < 0)
         {
             smallest_index = right_child_index;
         }
@@ -59,7 +59,7 @@ static void heapify_down(MinHeap *heap, int index)
             break;
         }
 
-        swap(&heap->data[index], &heap->data[smallest_index]);
+        vector_swap(heap->data, index, smallest_index);
         index = smallest_index;
     }
 }
