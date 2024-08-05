@@ -9,7 +9,7 @@ typedef struct stack Stack;
 Stack *stack_construct();
 
 // Libera todos os recursos alocados pela pilha.
-void stack_destroy(Stack *s, void (*element_free)(void *));
+void stack_destroy(void *s);
 
 // Empilha um elemento no topo da pilha.
 void stack_push(Stack *s, data_type element);

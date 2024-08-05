@@ -9,10 +9,10 @@ typedef struct queue Queue;
 Queue *queue_construct();
 
 // Libera todos os recursos alocados pela fila.
-void queue_destroy(Queue *q, void (*element_free)(void *));
+void queue_destroy(void *q);
 
 // Insere um elemento no fim da fila.
-void queue_enqueue(Queue *q, data_type element, void (*element_free)(void *));
+void queue_enqueue(Queue *q, data_type element);
 
 // Remove e retorna o elemento na frente da fila.
 data_type queue_dequeue(Queue *q);

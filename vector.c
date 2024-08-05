@@ -22,7 +22,8 @@ void vector_destroy(Vector *v, void (*element_free)(void *))
 {
     if (v != NULL)
     {
-        vector_clear(v, element_free);
+        if (element_free != NULL)
+            vector_clear(v, element_free);
 
         free(v);
     }

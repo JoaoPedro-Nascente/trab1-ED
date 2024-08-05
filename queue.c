@@ -1,15 +1,13 @@
 #include "queue.h"
-#include "vector.h"
+#include "circular_array.h"
 
 #include <stdlib.h>
 
-#define INITTIAL_CAPACITY 10
+#define INITIAL_CAPACITY 10
 
 struct queue
 {
-    Vector *data;
-    int front;
-    int rear;
+    CircularArray *data;
     int size;
     int capacity;
 };
@@ -18,64 +16,51 @@ Queue *queue_construct()
 {
     Queue *q = (Queue *)malloc(sizeof(Queue));
 
-    q->data = vector_construct(INITTIAL_CAPACITY);
-    q->front = 0;
-    q->rear = -1;
+    q->data = circular_array_construct(INITIAL_CAPACITY);
     q->size = 0;
-    q->capacity = INITTIAL_CAPACITY;
+    q->capacity = INITIAL_CAPACITY;
     return q;
 }
 
-void queue_destroy(Queue *q, void (*element_free)(void *))
+void queue_destroy(void *q)
 {
-    if (q != NULL)
+    Queue *queue = (Queue *)q;
+    if (queue != NULL)
     {
-        if (q->data != NULL)
-            vector_destroy(q->data, element_free);
+        if (queue->data != NULL)
+            circular_array_destroy(queue->data, NULL);
         free(q);
     }
 }
 
-void queue_enqueue(Queue *q, data_type element, void (*element_free)(void *))
+void queue_enqueue(Queue *q, data_type element)
 {
     if (q->size == q->capacity)
     {
-        q->capacity += 1;
-        Vector *v = vector_construct(q->capacity);
-        for (int i = 0; i < q->size; i++)
-        {
-            vector_push_back(v, vector_get(q->data, (q->front + i) % q->capacity / 2));
-        }
-
-        vector_destroy(q->data, element_free);
-        q->data = v;
-        q->front = 0;
-        q->rear = q->size - 1;
+        circular_array_resize(q->data, q->capacity * 2, NULL);
+        q->capacity *= 2;
     }
-    q->rear = (q->rear + 1) % q->capacity;
-    vector_push_back(q->data, element);
+    circular_array_add(q->data, element, NULL);
     q->size += 1;
 }
 
 data_type queue_dequeue(Queue *q)
 {
-    if (q->size == 0)
+    if (q->size > 0)
     {
-        return NULL; // Retorna NULL se a fila estiver vazia
+        q->size -= 1;
+        return circular_array_remove(q->data);
     }
-    data_type removed = vector_remove(q->data, q->front);
-    q->front = (q->front + 1) % q->capacity;
-    q->size -= 1;
-    return removed;
+    return NULL; // Retorna NULL se a fila estiver vazia
 }
 
 data_type queue_peek(Queue *q)
 {
-    if (q->size == 0)
+    if (q->size > 0)
     {
-        return NULL; // Retorna NULL se a fila estiver vazia
+        return circular_array_remove(q->data);
     }
-    return vector_get(q->data, q->front);
+    return NULL; // Retorna NULL se a fila estiver vazia
 }
 
 int queue_size(Queue *q)

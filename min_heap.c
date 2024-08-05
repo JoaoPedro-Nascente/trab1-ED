@@ -13,7 +13,7 @@ struct minHeap
     int (*compare)(const void *, const void *);
 };
 
-static void heapify_up(MinHeap *heap, int index)
+void heapify_up(MinHeap *heap, int index)
 {
     while (index > 0)
     {
@@ -27,7 +27,7 @@ static void heapify_up(MinHeap *heap, int index)
     }
 }
 
-static void heapify_down(MinHeap *heap, int index)
+void heapify_down(MinHeap *heap, int index)
 {
     while (index < heap->size)
     {
@@ -67,13 +67,14 @@ MinHeap *min_heap_construct(int (*compare)(const void *, const void *))
     return heap;
 }
 
-void min_heap_destroy(MinHeap *heap, void (*element_free)(void *))
+void min_heap_destroy(void *heap)
 {
-    if (heap != NULL)
+    MinHeap *h = (MinHeap *)heap;
+    if (h != NULL)
     {
-        if (heap->data != NULL)
-            vector_destroy(heap->data, element_free);
-        free(heap);
+        if (h->data != NULL)
+            vector_destroy(h->data, NULL);
+        free(h);
     }
 }
 

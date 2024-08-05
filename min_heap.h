@@ -9,7 +9,7 @@ typedef struct minHeap MinHeap;
 MinHeap *min_heap_construct(int (*compare)(const void *, const void *));
 
 // Libera todos os recursos alocados pela heap.
-void min_heap_destroy(MinHeap *heap, void (*element_free)(void *));
+void min_heap_destroy(void *heap);
 
 // Insere um elemento na heap.
 void min_heap_insert(MinHeap *heap, data_type element);

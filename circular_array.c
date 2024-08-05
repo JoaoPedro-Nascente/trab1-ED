@@ -36,7 +36,7 @@ void circular_array_destroy(CircularArray *ca, void (*element_free)(void *))
     {
         if (ca->data != NULL)
         {
-            vector_destroy(ca->data, element_free);
+            vector_destroy(ca->data, NULL);
         }
         free(ca);
     }
